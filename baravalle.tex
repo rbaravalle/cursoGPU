@@ -140,34 +140,29 @@ for h in range(P):
     d[h] = krnl(a, np.float32(q), np.int32(aux1)).get()  
 \end{verbatim}
 \section{Results}
-
-\subsection{Classification}
-{\em Support Vector Machines} (SVM)~\cite{Boser92} were used to perform the classification, using the {\em libsvm}~\cite{Chang2011} implementation. The method of {\em k-fold cross validation} was employed in order to validate the results with $k = 4$, {\em i.e.}, $75\%$ of samples are used as training and $25\%$ as testing (then switching the training and testing samples). The cross validation is applied only to scanner samples.
-
-A robust bread crumb classifier could be used to make the classification process independent of the image capturing condition. In each case, we performed a test in order to show the accuracy of the classifiers when there is a capturing condition mismatch between training and testing samples, {\em i.e.}, when training with scanner samples and testing with camera samples. Based on the randomness in the method's point selection, we made an {\em ensemble} of $10$ trained SVMs models, in which each SVM prediction {\em votes} for one bread type. Then the most appearing class (the most voted class for each image) is selected in each case. In the case of cross validation, we made an average of the percentages obtained. Table \ref{table:tableFirstTest} shows classification results when varying different parameters of the method.
+The analysis was performed varying the parameters of the method in order to better understand the speed-up introduced by the GPU implementation. Table \ref{table:tableFirstTest} shows times for CPU and GPU implementations.
 
 \begin{table}[htb]
 \centering
 \begin{tabular}{|c|c|c|c|c|c|}
     \hline
-    \# Fractal Dimensions & $14$ & $8$ & $20$ & $20$ & $30$\\
+    \# Fractal Dimensions & $10$ & $10$ & $10$ & $5$ \\
     \hline
-    $R_{max}$ & $40$ & $20$ & $20$ & $20$ & $20$\\
+    \# Points & $100$ & $1000$ & $2000$ & $2000$ \\
     \hline
-    \# Points & $900$ & $900$ & $900$ & $2500$ & $900$\\
+    Time (CPU)  & $2.94s$ & $7.14s$ & $12.97s$ & $7.95s$\\
     \hline
-    Time  & $75,5\%$ & $76,2\%$ & $77,1\%$ & $79,8\%$ & $77,4\%$\\
+    Time (GPU) & $1.76s$ & $2.48s$ & $4.31s$ & $3.4s$ \\
     \hline
 \end{tabular}
-\caption{Time taken with different parameters}
+\caption{Time for different parameters}
 \label{table:tableFirstTest}
 \end{table}
 
 
 \section{Conclusions}
-The use of multifractal features in bread crumb texture classification showed good performance. The sandbox multifractal spectrum demonstrated to be accurate enough to perform a classification of different bread types. A combination of both multifractal methods could lead to a stronger classifier. The use of boosting could improve the robustness of the method.
 
-The results found can be applied to validate synthetic samples, {\em i.e.}, the latter should have similar features to the bread type that is trying to simulate. These results can be extended to be used as quality parameters for these products. The robustness of the method needs to be enhanced. It will be useful to apply a Principal Component Analysis in order to identify the key variables in the feature vectors. 
+The GPU implementation shows that The use of the GPU can speed up the computation of the method. The GPU implementation of the algorithm performs between $2$ and $3$ times faster than the CPU code. Further improvement of the method can be achieved looking for bottlenecks in the CPU implementation.
 
 
 \bibliography{bibliografia/bib}
